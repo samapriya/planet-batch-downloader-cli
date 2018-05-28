@@ -1,0 +1,6 @@
+psutil>=5.2.2
+urllib3>=1.22
+requests>=2.18.4
+retrying>=1.3.3
+progressbar2>=3.34.2
+pyshp>=1.2.12
