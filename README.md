@@ -1,14 +1,9 @@
-# Planet Batch & Slack Pipeline CLI
+# Planet Batch Downloader CLI
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1079887.svg)](https://doi.org/10.5281/zenodo.1079887)
 [![Planet](https://img.shields.io/badge/SupportedBy%3A-Planet%20Ambassador%20Program-brightgreen.svg)](https://www.planet.com/products/education-and-research/)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/samapriya)
 
-
-![](https://cdn-images-1.medium.com/max/2000/1*BphYv7GoE1Ffkm-qdPqP3w.png)
-&copy; Planet Labs(Full line up of Satellites) and Planet &amp; Slack Technologies
-Logo
-
+This is a stripped down version of the [Planet Batch Slack Pipeline CLI](https://github.com/samapriya/Planet-Batch-Slack-Pipeline-CLI) which includes tools for you to batch search, activate and download planet items and assets using  
 For writing a readme file this time I have adapted a shared piece written for the medium article. The first part which is setting up the slack account, creating an application and a slack bot has been discussed in the [article here](https://medium.com/planet-stories/talk-slack-to-me-integrating-planet-and-slack-api-for-automation-batch-notifications-b47e2236429f). In the past I have written tools which act as pipelines for you to process single areas of interest at the time that could be chained, the need to write something that does a bit more heavy lifting arose. This command line interface(CLI) application was created to handle groups and teams that have multiple areas of interest and multiple input and output buckets and locations to function smoothly. I have integrated this to slack so you can be on the move while this task can be on a scheduler and update you when finished.
 
 ## Table of contents
