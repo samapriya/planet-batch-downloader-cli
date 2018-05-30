@@ -15,8 +15,8 @@ if StrictVersion(setuptools_version) < StrictVersion('38.3.0'):
     )
 
 try:
-    subprocess.call(["git"])
-    subprocess.call('git+https://github.com/planetlabs/planet-client-python.git --force',shell=True)
+    subprocess.call(['git'],shell=True)
+    subprocess.call('pip install git+https://github.com/planetlabs/planet-client-python.git --force',shell=True)
 except OSError as e:
     if e.errno==os.errno.ENOENT:
         raise SystemExit(
