@@ -3,8 +3,7 @@
 [![Planet](https://img.shields.io/badge/SupportedBy%3A-Planet%20Ambassador%20Program-brightgreen.svg)](https://www.planet.com/products/education-and-research/)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/samapriya)
 
-This is a stripped down version of the [Planet Batch Slack Pipeline CLI](https://github.com/samapriya/Planet-Batch-Slack-Pipeline-CLI) which includes tools for you to batch search, activate and download planet items and assets using  
-For writing a readme file this time I have adapted a shared piece written for the medium article. The first part which is setting up the slack account, creating an application and a slack bot has been discussed in the [article here](https://medium.com/planet-stories/talk-slack-to-me-integrating-planet-and-slack-api-for-automation-batch-notifications-b47e2236429f). In the past I have written tools which act as pipelines for you to process single areas of interest at the time that could be chained, the need to write something that does a bit more heavy lifting arose. This command line interface(CLI) application was created to handle groups and teams that have multiple areas of interest and multiple input and output buckets and locations to function smoothly. I have integrated this to slack so you can be on the move while this task can be on a scheduler and update you when finished.
+This is a stripped down version of the [Planet Batch Slack Pipeline CLI](https://github.com/samapriya/Planet-Batch-Slack-Pipeline-CLI) which includes tools for you to batch search, activate and download planet items and assets using the [Data API](https://developers.planet.com/). The integration of this tool with Slack for enabling notification was discussed in an earlier tool I created, and have been discussed in the [article here](https://medium.com/planet-stories/talk-slack-to-me-integrating-planet-and-slack-api-for-automation-batch-notifications-b47e2236429f). This command line interface(CLI) application was created to handle groups and teams that have multiple areas of interest and multiple input and output buckets and locations to function smoothly. This also comes with some additional tools such as being able to print quotas , export image footprints with metadata and idlist which can be used to search, activate and download.
 
 ## Table of contents
 * [Installation](#installation)
@@ -17,29 +16,35 @@ For writing a readme file this time I have adapted a shared piece written for th
 * [Changelog](#changelog)
 
 ## Installation
-The next step we will setup the [Planet-Batch-Slack-Pipeline-CLI](https://github.com/samapriya/Planet-Batch-Slack-Pipeline-CLI) and integrate our previously built slack app for notifications. To setup the prerequisites you need to install the Planet
-Python API Client and Slack Python API Clients.
-* To install the tool you can go to the GitHub page at [Planet-Batch-Slack-Pipeline-CLI](https://github.com/samapriya/Planet-Batch-Slack-Pipeline-CLI). As always two of my favorite operating systems are Windows and Linux, and to install on Linux
+The next step we will setup the [Planet-Batch-Slack-Pipeline-CLI](https://github.com/samapriya/Planet-Batch-Slack-Pipeline-CLI) and integrate our previously built slack app for notifications. To setup the prerequisites you need to install the Planet Python API Client. You need to have git client installed for this program, it is easy to install and it will be useful for other programs. You can get instructions on [installation here](https://git-scm.com/downloads)
+
+* To install the tool you can go to the GitHub page at [Planet-Batch-Downloader-CLI](https://github.com/samapriya/planet-batch-downloader-cli). To install on Linux
 
 ```
-git clone https://github.com/samapriya/Planet-Batch-Slack-Pipeline-CLI.git
-cd Planet-Batch-Slack-Pipeline-CLI && sudo python setup.py install
+git clone https://github.com/samapriya/planet-batch-downloader-cli.git
+cd planet-batch-downloader-cli && sudo python setup.py install
 pip install -r requirements.txt
 ```
 
 * for windows download the zip and after extraction go to the folder containing "setup.py" and open command prompt at that location and type
 ```
-python setup.py install  
+python setup.py install
 pip install -r requirements.txt
 ```
 
-Now call the tool for the first time, by typing in `pbatch -h`. This will only work if you have python in the system path which you can test for opening up terminal or command prompt and typing `python.`
+you can also install it using a single command once you have git installed and depending on whether you need sudo permissions or admin access
+
+```
+pip install git+https://github.com/samapriya/planet-batch-downloader-cli.git
+```
+
+Now call the tool for the first time, by typing in `planet_batch -h`. This will only work if you have python in the system path which you can test for opening up terminal or command prompt and typing `python.`
 
 ## Getting started
 Once the requirements have been satisfied the first thing we would setup would be the OAuth Keys we created. The tools consists of a bunch of slack tools as well including capability to just use this tool to send slack messages, attachments and clean up channel as needed.
 
-![](https://cdn-images-1.medium.com/max/1600/1*b0KwseZZId5kj_FXcGO5tw.jpeg)
-Planet Batch Tools and Slack Addons Interface
+![Planet batch downloader cli interface](https://i.imgur.com/wFKngSk.jpg)
+Planet batch downloader cli interface
 
 The two critical setup tools to make Slack ready and integrated are the smain and sbot tools where you will enter the OAuth for the application and OAuth for the bot that you generated earlier. These are then stored into your session for future use, you can call them using
 
@@ -89,7 +94,7 @@ Below is a folder based batch execution to convert multiple geojson files to str
 ![aoijsonb](https://i.imgur.com/u0A7mC7.gif)
 
 ## Batch Activation
-This tool was rewritten to provide users with two options to activate their assets. They can either point the tool at a folder and select the item and asset combination or they can specify a CSV file which contains each asset and item type and path to the structured JSON file. A setup would be as simple as 
+This tool was rewritten to provide users with two options to activate their assets. They can either point the tool at a folder and select the item and asset combination or they can specify a CSV file which contains each asset and item type and path to the structured JSON file. A setup would be as simple as
 
 `pbatch activate --indir "path to folder with structured json files" --asset "item asset type example: PSOrthoTile analytic"`
 
@@ -142,7 +147,7 @@ Two things that keep changing are space (The amount of space needed to store you
 
 And it can also consume a csv file where the csv file need to have headers
 
-CSV Setup to estimate size of assets in GB 
+CSV Setup to estimate size of assets in GB
 
 | pathways                | asset                    |
 |-------------------------|--------------------------|
