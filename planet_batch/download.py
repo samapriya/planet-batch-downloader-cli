@@ -21,12 +21,14 @@ urllib3.disable_warnings()
 
 ASSET_URL = 'https://api.planet.com/data/v1/item-types/{}/items/{}/assets/'
 SEARCH_URL = 'https://api.planet.com/data/v1/quick-search'
-pkey=expanduser("~/.config/planet/pkey.csv")
-f=open(pkey)
-for row in csv.reader(f):
-    #print(str(row).strip("[']"))
-    os.environ['PLANET_API_KEY']=str(row).strip("[']")
-
+fname = os.path.join(os.path.expanduser('~'), '.planet.json')
+contents = {}
+if os.path.exists(fname):
+    with open(fname, 'r') as fp:
+        contents = json.loads(fp.read())
+        os.environ['PLANET_API_KEY']=contents['key']
+else:
+    raise IOError('Escape to End and Initialize')
 # set up auth
 SESSION = requests.Session()
 SESSION.auth = (os.environ.get('PLANET_API_KEY'), '')
