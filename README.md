@@ -8,13 +8,32 @@ This is a stripped down version of the [Planet Batch Slack Pipeline CLI](https:/
 ## Table of contents
 * [Installation](#installation)
 * [Getting started](#getting-started)
+* [Quota](#quota)
+* [ID List](#id-list)
+* [ID List to Footprint](#id-list-to-footprint)
 * [Batch Approach to Structured JSON](#batch-approach-to-structured-json)
 * [Batch Activation](#batch-activation)
 * [Batch Download and Balance](#batch-download-and-balance)
 * [Additional Tools](#additional-tools)
 * [Citation and Credits](#citation-and-credits)
 * [Changelog](#changelog)
-
+    apikey              Enter your planet API Key
+    quota               Prints your Planet Quota Details
+    idlist              Creates an IDLIST that intersects AOI JSON
+    id2footprint        Convert IDlist to Multi-footprint geojson
+    aoijson             Tool to convert KML, Shapefile,WKT,GeoJSON or Landsat
+                        WRS PathRow file to AreaOfInterest.JSON file with
+                        structured query for use with Planet API
+    aoijsonb            Tool to batch convert KML, Shapefile,WKT,GeoJSON or
+                        Landsat WRS PathRow file to AreaOfInterest.JSON file
+                        with structured query for use with Planet API
+    activate            Allows users to batch activate assets using a
+                        directory with json or list of json
+    space               Allows users to batch estimate asset sizes using a
+                        directory with json or list of json
+    downloader          Allows users to batch download assets using a
+                        directory with json or list of json(Sends updates on
+                        Slack if slack key added)
 ## Installation
 The next step we will setup the [Planet-Batch-Slack-Pipeline-CLI](https://github.com/samapriya/Planet-Batch-Slack-Pipeline-CLI) and integrate our previously built slack app for notifications. To setup the prerequisites you need to install the Planet Python API Client. You need to have git client installed for this program, it is easy to install and it will be useful for other programs. You can get instructions on [installation here](https://git-scm.com/downloads)
 
@@ -41,27 +60,23 @@ pip install git+https://github.com/samapriya/planet-batch-downloader-cli.git
 Now call the tool for the first time, by typing in `planet_batch -h`. This will only work if you have python in the system path which you can test for opening up terminal or command prompt and typing `python.`
 
 ## Getting started
-Once the requirements have been satisfied the first thing we would setup would be the OAuth Keys we created. The tools consists of a bunch of slack tools as well including capability to just use this tool to send slack messages, attachments and clean up channel as needed.
+Once the requirements have been satisfied the first thing we would setup the api key from planet and you can run this by simply using
+
+```planet_batch apikey``` this calls the ```planet init``` function from Planet's own CLI so if you wish you can simply just type ```planet init``` to perform the same authorization.
 
 ![Planet batch downloader cli interface](https://i.imgur.com/wFKngSk.jpg)
 Planet batch downloader cli interface
 
-The two critical setup tools to make Slack ready and integrated are the smain and sbot tools where you will enter the OAuth for the application and OAuth for the bot that you generated earlier. These are then stored into your session for future use, you can call them using
+## Quota
+This tool is an addon for an experimental API that allows the user to query their quota.
 
-`pbatch smain `_Use the "_**_OAuth Access Token_**_" generated earlier_. You can find the [tutorial here](https://medium.com/planet-stories/talk-slack-to-me-integrating-planet-and-slack-api-for-automation-batch-notifications-b47e2236429f)
+## ID list
+This generates ID list for a specific item and asset type configuration. You can run this in batch mode for the entire folder of structured json or point to a specific file and this tool will run on that json only. This generates an idlist that could be used for the activation, and download of items and asset combinations.
 
-If you want more control over being able to delete slack messages you would
-want to generate a [token here](https://api.slack.com/custom-integrations/legacy-tokens) and use that as the `**pbatch smain**` token.
+## ID List to Footprint
+This tool is an application of the Plane CLI used to generate footprint from an idlist file that you may have created earlier. This will export the footprint into a geojson file that could then be converted into other interoperable files.
 
 
-`pbatch sbot `_Use "_**_Bot User OAuth Access Token" _**_generated earlier_. You can find the [tutorial here](https://medium.com/planet-stories/talk-slack-to-me-integrating-planet-and-slack-api-for-automation-batch-notifications-b47e2236429f)
-
-Once this is done your bot is now setup to message you when a task is completed. In our case these are tied into individual tools within the batch toolkit we just installed.
-
-**In case you ever forget your API keys or need it again you can access all installed applications/bots and [oauth tokens here](https://api.slack.com/apps).**
-
-To be clear these tools were designed based on what I thought was an effective way of looking at data, downloading them and chaining the processes together. They are still a set of individual tools to make sure that one operation is independent of the other and does not break in case of a problem. So a non-monolithic design in some sense to make sure the pieces work. We will go through each of them in the order of use `pbatch planetkey` is the obvious one which is your planet API key and will
-allow you to store this locally to a session.
 
 _The _**_aoijson_**_ tool is the same tool used in the Planet-EE CLI within the pbatch bundle allows you to bring any existing KML, Zipped Shapefile, GeoJSON, WKT or even Landsat Tiles to a structured geojson file, this is so that the Planet API can read the structured geojson which has additional filters such as cloud cover and range of dates. The tool can then allow you to
 convert the geojson file to include filters to be used with the Planet Data API._
@@ -69,7 +84,7 @@ convert the geojson file to include filters to be used with the Planet Data API.
 Let us say we want to convert this [map.geojson]() to a structured aoi.json from _June 1 2017 to June 30th 2017 with 15% cloud cover as our maximum_. We would pass the following command
 
 ```
-pbatch.py aoijson --start "2017-06-01" --end "2017-06-30" --cloud "0.15" --inputfile "GJSON" --geo "local path to map.geojson file" --loc "path where aoi.json output file will be created"
+planet_batch.py aoijson --start "2017-06-01" --end "2017-06-30" --cloud "0.15" --inputfile "GJSON" --geo "local path to map.geojson file" --loc "path where aoi.json output file will be created"
 ```
 
 
