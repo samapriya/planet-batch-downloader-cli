@@ -21,14 +21,12 @@ urllib3.disable_warnings()
 
 ASSET_URL = 'https://api.planet.com/data/v1/item-types/{}/items/{}/assets/'
 SEARCH_URL = 'https://api.planet.com/data/v1/quick-search'
-fname = os.path.join(os.path.expanduser('~'), '.planet.json')
-contents = {}
-if os.path.exists(fname):
-    with open(fname, 'r') as fp:
-        contents = json.loads(fp.read())
-        os.environ['PLANET_API_KEY']=contents['key']
-else:
-    raise IOError('Escape to End and Initialize')
+pkey=expanduser("~/.config/planet/pkey.csv")
+f=open(pkey)
+for row in csv.reader(f):
+    #print(str(row).strip("[']"))
+    os.environ['PLANET_API_KEY']=str(row).strip("[']")
+
 # set up auth
 SESSION = requests.Session()
 SESSION.auth = (os.environ.get('PLANET_API_KEY'), '')
@@ -235,7 +233,7 @@ def check_activation(item_id, item_type, asset_type):
     retry_on_exception=retry_if_rate_limit_error,
     stop_max_attempt_number=5)
 def download(url, path, item_id, asset_type, overwrite):
-    fname = '{}_{}.tif'.format(item_id, asset_type)
+    fname = item_id
     local_path = os.path.join(path, fname)
 
     if not overwrite and os.path.exists(local_path):
@@ -302,6 +300,8 @@ def process_download(path, id_list, item_type, asset_type, overwrite):
         try:
             if result.json()[asset_type]['status'] == 'active':
                 download_url = result.json()[asset_type]['location']
+                r=SESSION.get(download_url,allow_redirects=False)
+                item_id=r.headers['location'].split('/')[4].split('?')[0]
                 result = download(download_url, path, item_id, asset_type, overwrite)
             else:
                 result = False
